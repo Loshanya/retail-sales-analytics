@@ -1,145 +1,336 @@
 # Retail Sales & Inventory Analytics
 
-## Project Overview
+An end-to-end retail analytics project that transforms raw transactional data into business insights using Python, MySQL, SQL, and Power BI.
 
-This project focuses on analyzing retail sales and inventory data using Python, MySQL, SQL, and Power BI.
+The project covers the complete analytics workflow:
 
-The objective was to transform raw retail data into a structured analytical database, perform SQL-based business analysis, and build an interactive Power BI dashboard to understand sales performance, customer behavior, product performance, store performance, sales channels, and inventory.
-
-The project follows the workflow:
-
-Raw Data → Data Cleaning → MySQL Database → SQL Analysis → Power BI Dashboard
-
-The dataset contains 641K+ sales transactions and multiple entities including customers, products, stores, inventory, and promotions.
+**Data Cleaning → Database Design → SQL Analysis → Data Modeling → Interactive Dashboard**
 
 ---
-Tools & Technologies
-Programming: Python
-Data Cleaning: Jupyter Notebook
-Database: MySQL
-Analysis: SQL
-Visualization: Power BI
-Data Modeling: Fact-Dimension / Star Schema
-Version Control: Git & GitHub
 
+## Project Overview
 
-## Key Components
+The project analyzes a retail dataset containing sales transactions, customers, products, stores, promotions, and inventory.
 
-### 1. Data Cleaning & Preparation
+The primary objective was to understand:
 
-The raw CSV datasets were initially inspected and cleaned using Python and Jupyter Notebook.
+- How revenue changes over time
+- Which product categories and products generate the most revenue
+- Which stores and sales channels perform best
+- Which customers contribute the most revenue
+- How customer loyalty segments differ in spending
+- Where inventory is concentrated
+- Which products have slow inventory movement
+- How promotions affect sales performance
 
-The preprocessing included:
+The final output is an interactive Power BI dashboard supported by a MySQL analytical database and a collection of SQL business analyses.
 
+---
+
+## 1. Data Cleaning & Preparation
+
+The raw data consisted of six CSV files:
+
+| Dataset | Description |
+|---|---|
+| `bm_sales.csv` | Transaction-level sales records |
+| `bm_customers.csv` | Customer and loyalty information |
+| `bm_skus.csv` | Product/SKU details |
+| `bm_stores.csv` | Store information |
+| `bm_inventory.csv` | Inventory and stock information |
+| `bm_promotions.csv` | Promotion details |
+
+The raw datasets were first inspected and prepared using Python and Jupyter Notebook.
+
+The cleaning process included:
+
+- Inspecting dataset structure and data types
 - Handling missing values
+- Cleaning date fields
 - Converting columns to appropriate data types
-- Cleaning and standardizing date fields
 - Handling missing customer IDs
-- Preparing the datasets for database loading
+- Preparing the cleaned datasets for MySQL ingestion
 
-The data-cleaning notebook is available in the `data/` directory.
+The notebook used for the preprocessing stage is available in:
 
-### 2. Database Design
+`data/data cleaning.ipynb`
 
-The cleaned data was loaded into MySQL and organized into a relational fact-dimension structure.
+---
 
-The database consists of:
+## 2. MySQL Database Design
 
-**Fact Tables**
-- `fact_sales`
-- `fact_inventory`
+After preprocessing, the cleaned datasets were loaded into MySQL.
 
-**Dimension Tables**
-- `dim_customer`
-- `dim_sku`
-- `dim_store`
-- `dim_promotion`
+The database was organized into a fact-dimension structure to make analytical queries easier and more efficient.
 
-A staging table was also used during the data loading process.
+### Fact Tables
 
-The database setup and loading process is available in `sql/01_database_setup.sql`.
+**`fact_sales`**
 
-### 3. SQL Business Analysis
+Contains transaction-level information such as:
 
-A series of SQL queries were developed to answer business-oriented questions across sales, customers, products, stores, and inventory.
+- Sale ID
+- Sale date
+- SKU
+- Store
+- Customer
+- Quantity
+- Total transaction value
 
-The analysis covers:
+**`fact_inventory`**
+
+Contains inventory-related information such as:
+
+- SKU
+- Store
+- Stock on hand
+- Inventory-related measures
+
+### Dimension Tables
+
+**`dim_sku`**
+
+Contains product information including:
+
+- Product
+- Category
+- Brand
+- Cost
+- Selling price
+
+**`dim_customer`**
+
+Contains:
+
+- Customer information
+- Loyalty segment
+- Customer attributes
+
+**`dim_store`**
+
+Contains:
+
+- Store information
+- City
+- Store type
+- Store attributes
+
+**`dim_promotion`**
+
+Contains:
+
+- Promotion details
+- Promotion validity
+- Promotional information
+
+A staging table was also used during the data loading and transformation process.
+
+The complete database creation and loading process is available in:
+
+`sql/01_database_setup.sql`
+
+---
+
+## 3. SQL Business Analysis
+
+Once the database was created, SQL was used to answer 21 business questions across sales, products, customers, stores, channels, promotions, and inventory.
+
+### Sales Analysis
 
 - Overall sales KPIs
 - Year-wise sales trends
-- Revenue by category
-- Top-performing products
-- Store performance and rankings
+- Revenue by product category
+- Revenue contribution by category
+- Year-over-year revenue growth
+- Revenue by sales channel
+
+### Product Analysis
+
+- Top products by revenue
+- Top products within each category
+- Product-level sales performance
+
+### Store Analysis
+
+- Store-level revenue and sales performance
+- Overall store rankings
 - City-wise store rankings
+
+### Customer Analysis
+
 - High-value customers
-- Customer loyalty analysis
-- Inventory versus sales
-- Inventory coverage
+- Revenue by loyalty segment
+- Repeat versus one-time customer behavior
+- Customer purchase frequency
+
+### Inventory Analysis
+
+- Inventory versus sales performance
+- Months of inventory on hand
+- Recent sales and inventory analysis
 - Inventory movement classification
-- Slow-moving inventory
-- Inventory turnover
-- Sales channel performance
-- Year-over-year growth
-- Top products by category
-- Customer purchase behavior
+- Slow-moving inventory value
+- Inventory turnover by category
+
+### Promotion Analysis
+
 - Promotion effectiveness
+- Sales performance during promotional activity
 
-The individual SQL analyses are available in the `sql/` directory.
-
-SQL Concepts Used
-
-The project uses a range of SQL concepts, including:
-
-SELECT, WHERE and CASE
-GROUP BY and HAVING
-Aggregate functions
-INNER and LEFT JOINs
-Common Table Expressions (CTEs)
-Window functions
-RANK and ROW_NUMBER
-Partitioning
-Date functions
-Conditional aggregation
-Temporary tables
-Subqueries
-Percentage and contribution analysis
-
-### 4. Power BI Dashboard
-
-The MySQL database was connected to Power BI to build an interactive analytical dashboard.
-
-The dashboard includes:
-
-- Total Revenue
-- Total Transactions
-- Total Units Sold
-- Average Transaction Value
-- Monthly Revenue Trend
-- Revenue by Category
-- Top 10 Products by Revenue
-- Top 10 Stores by Revenue
-- Revenue by Customer Segment
-- Revenue by Sales Channel
-- Inventory by Category
-
-Year and Category slicers were added to allow users to dynamically filter the dashboard.
+All individual SQL analyses are available in the `sql/` directory.
 
 ---
 
-## Project Structure
+## 4. SQL Techniques Used
+
+The project uses a range of SQL concepts for business analysis, including:
+
+- Joins
+- Aggregations
+- `CASE` expressions
+- Subqueries
+- Common Table Expressions (CTEs)
+- Window functions
+- `RANK()`
+- `ROW_NUMBER()`
+- `PARTITION BY`
+- Conditional aggregation
+- Date functions
+- Temporary tables
+- Percentage contribution analysis
+- Ranking and segmentation
+
+---
+
+## 5. Power BI Data Model
+
+The MySQL database was connected to Power BI to create the analytical model.
+
+Relationships were established between the fact and dimension tables so that sales and inventory could be analyzed across:
+
+- Products
+- Categories
+- Customers
+- Loyalty segments
+- Stores
+- Cities
+- Sales channels
+
+The resulting data model was used as the foundation for the Power BI dashboard.
+
+---
+
+## 6. Power BI Dashboard
+
+The final dashboard provides an interactive overview of retail performance.
+
+### Key Performance Indicators
+
+| KPI | Purpose |
+|---|---|
+| Total Revenue | Overall revenue generated |
+| Total Transactions | Number of sales transactions |
+| Total Units Sold | Quantity of products sold |
+| Average Transaction Value | Average value per transaction |
+
+### Dashboard Visuals
+
+#### Sales Performance
+
+- Monthly Revenue Trend
+- Revenue by Category
+- Revenue by Sales Channel
+
+#### Product & Store Performance
+
+- Top 10 Products by Revenue
+- Top 10 Stores by Revenue
+
+#### Customer Analysis
+
+- Revenue by Customer Segment
+
+#### Inventory Analysis
+
+- Inventory by Category
+
+### Interactive Filters
+
+The dashboard includes:
+
+- Year slicer
+- Category slicer
+
+These filters allow users to dynamically analyze the dashboard based on different years and product categories.
+
+---
+
+## Dashboard Preview
+
+![Retail Sales & Inventory Analytics](screenshots/dashboard.png)
+
+---
+
+## 7. Key Results & Insights
+
+The analysis covers:
+
+- **641K+ sales transactions**
+- **1.67M+ units sold**
+- **73.2M+ total revenue**
+
+Some of the major findings include:
+
+- **Electronics** was the largest revenue-contributing category.
+- Top-performing products and stores were identified using SQL ranking techniques.
+- Revenue contribution differs across customer loyalty segments.
+- Sales channels show different levels of contribution to overall revenue.
+- Inventory analysis was used to classify products based on sales movement.
+- Slow-moving inventory was identified to highlight potential areas for inventory optimization.
+- Category-level inventory turnover provided an additional view of stock efficiency.
+
+The SQL analyses provide the detailed calculations behind these findings, while Power BI presents them through an interactive dashboard.
+
+---
+
+## 8. Project Structure
 
 ```text
 retail-sales-analytics/
 │
 ├── data/
-│   ├── data_cleaning.ipynb
+│   ├── bm_customers.csv
+│   ├── bm_inventory.csv
+│   ├── bm_promotions.csv
+│   ├── bm_sales.csv
+│   ├── bm_skus.csv
+│   ├── bm_stores.csv
+│   ├── data cleaning.ipynb
+│   ├── cleaned datasets.png
 │   └── README.md
 │
 ├── sql/
 │   ├── 01_database_setup.sql
 │   ├── 02_overall_sales_kpis.sql
 │   ├── 03_yearly_sales_trend.sql
-│   ├── ...
+│   ├── 04_revenue_by_category.sql
+│   ├── 05_top_products_by_revenue.sql
+│   ├── 06_store_performance.sql
+│   ├── 07_store_revenue_ranking.sql
+│   ├── 08_city_wise_store_ranking.sql
+│   ├── 09_high_value_customers.sql
+│   ├── 10_revenue_by_loyalty_segment.sql
+│   ├── 11_inventory_vs_sales.sql
+│   ├── 12_inventory_months_on_hand.sql
+│   ├── 13_recent_sales_inventory_analysis.sql
+│   ├── 14_inventory_movement_classification.sql
+│   ├── 15_slow_moving_inventory_value.sql
+│   ├── 16_inventory_turnover_by_category.sql
+│   ├── 17_revenue_by_sales_channel.sql
+│   ├── 18_year_over_year_growth.sql
+│   ├── 19_top_products_by_category.sql
+│   ├── 20_repeat_vs_one_time_customers.sql
+│   ├── 21_promotion_effectiveness.sql
 │   └── 22_final_business_kpis.sql
 │
 ├── powerbi/
@@ -150,17 +341,140 @@ retail-sales-analytics/
 │
 └── README.md
 
-Results & Insights
+## 9. Tools & Technologies
 
-The analysis produced several useful business insights:
+### Programming & Data Processing
+- Python
+- Pandas
+- Jupyter Notebook
 
-Analyzed more than 641K sales transactions.
-Generated approximately 73.2M in total revenue.
-More than 1.67M units were sold across the analyzed period.
-Electronics was the largest revenue-contributing category.
-Top-performing products and stores were identified using SQL ranking techniques.
-Customer segments were compared based on their contribution to revenue.
-Sales channels were analyzed to understand their relative contribution to overall sales.
-Inventory movement and slow-moving inventory were analyzed to identify potential areas for optimization.
+### Database & Analysis
+- MySQL
+- SQL
 
-The Power BI dashboard provides an interactive view of these findings and allows users to filter the analysis by year and product category.
+### Business Intelligence
+- Power BI
+
+### Data Modeling
+- Fact-Dimension Model
+- Relational Data Modeling
+
+### Version Control
+- Git
+- GitHub
+
+## 10. How to Reproduce the Project
+
+### Step 1 — Clone the Repository
+
+Clone the repository and navigate to the project directory:
+
+```bash
+git clone https://github.com/Loshanya/retail-sales-analytics.git
+cd retail-sales-analytics
+## 10. How to Reproduce the Project
+
+### Step 2 — Prepare the Data
+
+The project uses six source datasets available in the `data/` directory:
+
+```text
+data/
+├── bm_customers.csv
+├── bm_inventory.csv
+├── bm_promotions.csv
+├── bm_sales.csv
+├── bm_skus.csv
+└── bm_stores.csv
+The data-cleaning notebook is available at:
+data/data cleaning.ipynb
+
+The notebook was used to inspect and prepare the raw datasets before loading them into MySQL.
+
+The cleaning process includes:
+
+Inspecting the structure and data types
+Handling missing values
+Cleaning date fields
+Converting columns to appropriate data types
+Handling missing customer IDs
+Preparing the datasets for database ingestion
+
+## Step 3 — Create the MySQL Database
+
+Open MySQL Workbench and execute:
+
+sql/01_database_setup.sql
+
+This script creates the retail_analytics database and the required staging, fact and dimension tables.
+
+The database contains:
+
+fact_sales
+fact_inventory
+dim_customer
+dim_sku
+dim_store
+dim_promotion
+
+The script also loads the required data and establishes the relationships between the tables.
+## Step 4 — Run the SQL Analysis
+
+After creating and populating the database, execute the remaining SQL scripts from the sql/ directory.
+
+The SQL scripts answer individual business questions related to:
+
+Overall sales performance
+Revenue by category
+Year-wise sales trends
+Top products
+Store performance
+Customer behavior
+Customer loyalty segments
+Inventory performance
+Sales channels
+Year-over-year growth
+Promotion effectiveness
+
+The project contains 21 business analyses, with each SQL file focusing on a specific analytical problem.
+
+## Step 5 — Open the Power BI Dashboard
+
+Open the Power BI file:
+
+powerbi/Retail_Sales_Analytics_Dashboard.pbix
+
+The Power BI model uses the MySQL database tables to create relationships between sales, inventory, products, customers and stores.
+
+The dashboard contains:
+
+Total Revenue
+Total Transactions
+Total Units Sold
+Average Transaction Value
+Monthly Revenue Trend
+Revenue by Category
+Top 10 Products by Revenue
+Top 10 Stores by Revenue
+Revenue by Customer Segment
+Revenue by Sales Channel
+Inventory by Category
+
+##Step 6 — Explore the Dashboard
+
+The dashboard contains interactive Year and Category slicers.
+
+Users can select a specific year or product category and dynamically analyze the corresponding changes in:
+
+Revenue
+Transactions
+Units Sold
+Average Transaction Value
+Revenue trends
+Product performance
+Store performance
+Customer segments
+Sales channels
+Inventory
+
+This allows the dashboard to be used for both high-level business monitoring and detailed performance analysis.
