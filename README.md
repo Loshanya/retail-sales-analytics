@@ -341,7 +341,7 @@ retail-sales-analytics/
 │
 └── README.md
 
-## 9. Tools & Technologies
+ 9. Tools & Technologies
 
 ### Programming & Data Processing
 - Python
@@ -372,7 +372,7 @@ Clone the repository and navigate to the project directory:
 ```bash
 git clone https://github.com/Loshanya/retail-sales-analytics.git
 cd retail-sales-analytics
-## 10. How to Reproduce the Project
+ 10. How to Reproduce the Project
 
 ### Step 2 — Prepare the Data
 
@@ -400,7 +400,7 @@ Converting columns to appropriate data types
 Handling missing customer IDs
 Preparing the datasets for database ingestion
 
-## Step 3 — Create the MySQL Database
+### Step 3 — Create the MySQL Database
 
 Open MySQL Workbench and execute:
 
@@ -418,7 +418,7 @@ dim_store
 dim_promotion
 
 The script also loads the required data and establishes the relationships between the tables.
-## Step 4 — Run the SQL Analysis
+### Step 4 — Run the SQL Analysis
 
 After creating and populating the database, execute the remaining SQL scripts from the sql/ directory.
 
@@ -438,7 +438,7 @@ Promotion effectiveness
 
 The project contains 21 business analyses, with each SQL file focusing on a specific analytical problem.
 
-## Step 5 — Open the Power BI Dashboard
+### Step 5 — Open the Power BI Dashboard
 
 Open the Power BI file:
 
@@ -460,7 +460,7 @@ Revenue by Customer Segment
 Revenue by Sales Channel
 Inventory by Category
 
-##Step 6 — Explore the Dashboard
+### Step 6 — Explore the Dashboard
 
 The dashboard contains interactive Year and Category slicers.
 
