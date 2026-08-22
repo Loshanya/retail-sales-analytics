@@ -340,8 +340,9 @@ retail-sales-analytics/
 │   └── dashboard.png
 │
 └── README.md
+```
 
- 9. Tools & Technologies
+ ## 9. Tools & Technologies
 
 ### Programming & Data Processing
 - Python
@@ -372,7 +373,7 @@ Clone the repository and navigate to the project directory:
 ```bash
 git clone https://github.com/Loshanya/retail-sales-analytics.git
 cd retail-sales-analytics
- 10. How to Reproduce the Project
+```
 
 ### Step 2 — Prepare the Data
 
@@ -386,6 +387,7 @@ data/
 ├── bm_sales.csv
 ├── bm_skus.csv
 └── bm_stores.csv
+```
 The data-cleaning notebook is available at:
 data/data cleaning.ipynb
 
@@ -418,6 +420,7 @@ dim_store
 dim_promotion
 
 The script also loads the required data and establishes the relationships between the tables.
+
 ### Step 4 — Run the SQL Analysis
 
 After creating and populating the database, execute the remaining SQL scripts from the sql/ directory.
